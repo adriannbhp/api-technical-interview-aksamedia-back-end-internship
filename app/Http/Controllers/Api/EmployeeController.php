@@ -43,8 +43,11 @@ class EmployeeController extends Controller
         // Validate and create employee
         $employee = Employee::create($request->validated());
 
-        return response()->json(new DefaultResponse('success', ResponseMessages::SUCCESS_EMPLOYEE_CREATED,
-            new EmployeeResource($employee)), HttpStatusCodes::CREATED);
+        return response()->json([
+            'status' => 'success',
+            'message' => ResponseMessages::SUCCESS_EMPLOYEE_CREATED,
+            'data' => new EmployeeResource($employee),
+        ], HttpStatusCodes::CREATED);
     }
 
     // Update an existing employee
@@ -53,21 +56,28 @@ class EmployeeController extends Controller
         $employee = Employee::findOrFail($id);
         $employee->update($request->validated());
 
-        return response()->json(new DefaultResponse('success', ResponseMessages::SUCCESS_EMPLOYEE_UPDATED,
-            new EmployeeResource($employee)), HttpStatusCodes::OK);
+        return response()->json([
+            'status' => 'success',
+            'message' => ResponseMessages::SUCCESS_EMPLOYEE_UPDATED,
+            'data' => new EmployeeResource($employee),
+        ], HttpStatusCodes::OK);
     }
 
-    // Delete an employee
     public function destroy($id): JsonResponse
     {
         try {
             $employee = Employee::findOrFail($id);
             $employee->delete();
 
-            return response()->json(new DefaultResponse('success', ResponseMessages::SUCCESS_EMPLOYEE_DELETED), HttpStatusCodes::OK);
+            return response()->json([
+                'status' => 'success',
+                'message' => ResponseMessages::SUCCESS_EMPLOYEE_DELETED,
+            ], HttpStatusCodes::OK);
         } catch (\Exception $e) {
-            return response()->json(new DefaultResponse('error', ResponseMessages::ERROR_FAILED_TO_DELETE . $e->getMessage()), HttpStatusCodes::INTERNAL_SERVER_ERROR);
+            return response()->json([
+                'status' => 'error',
+                'message' => ResponseMessages::ERROR_FAILED_TO_DELETE . ' ' . $e->getMessage(),
+            ], HttpStatusCodes::INTERNAL_SERVER_ERROR);
         }
     }
 }
-

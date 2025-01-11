@@ -18,4 +18,10 @@ class ResponseMessages
     const SUCCESS_LOGOUT = 'Logout successful!'; // Added for logout
     const ERROR_LOGOUT_FAILED = 'Logout failed!'; // Added for logout
     const SUCCESS_USER_CREATED = 'User created successfully'; // Added for user creation
+
+    // Added for nilaiRT and nilaiST
+    const SUCCESS_NILAI_RT_RETRIEVED = 'Successfully retrieved nilaiRT data';
+    const SUCCESS_NILAI_ST_RETRIEVED = 'Successfully retrieved nilaiST data';
+    const ERROR_NO_NILAI_FOUND = 'No nilai data found';
 }
+

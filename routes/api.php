@@ -3,12 +3,18 @@
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DivisionController;
 use App\Http\Controllers\Api\EmployeeController;
+use App\Http\Controllers\Api\NilaiController;
 use App\Http\Middleware\JwtMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Authentication Routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+// Public Routes for Nilai
+Route::get('/nilaiRT', [NilaiController::class, 'nilaiRT'])->name('nilaiRT');
+Route::get('/nilaiST', [NilaiController::class, 'nilaiST'])->name('nilaiST');
 
 Route::middleware([JwtMiddleware::class])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
