@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Constants\ResponseMessages;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\DTOs\Response\NilaiResponse;
+use App\Http\Controllers\DTOs\Response\GlobalResponse;
 use App\Services\NilaiService;  // Import the service class
 use App\Models\Nilai;
 use Illuminate\Http\Request;
@@ -33,7 +33,7 @@ class NilaiController extends Controller
         $transformedData = $this->nilaiService->transformNilaiRTData($nilaiRTData);
 
         // Create DTO response
-        $response = new NilaiResponse(
+        $response = new GlobalResponse(
             'success',
             ResponseMessages::SUCCESS_NILAI_RT_RETRIEVED,
             $transformedData
@@ -59,7 +59,7 @@ class NilaiController extends Controller
         $sortedData = $transformedData->sortByDesc('total')->values();
 
         // Create DTO response
-        $response = new NilaiResponse(
+        $response = new GlobalResponse(
             'success',
             ResponseMessages::SUCCESS_NILAI_ST_RETRIEVED,
             $sortedData

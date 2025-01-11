@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\DTOs\Request\LoginRequest;
 use App\Http\Controllers\DTOs\Request\RegisterRequest;
 use App\Http\Controllers\DTOs\Response\DefaultResponse;
+use App\Http\Controllers\DTOs\Response\GlobalResponse;
+use App\Http\Controllers\DTOs\Response\LogoutResponse;
 use App\Http\Exceptions\AuthException; // Import the custom exception
 use App\Constants\ResponseMessages; // Import the ResponseMessages class
 use App\Constants\HttpStatusCodes; // Import the HttpStatusCodes class
@@ -34,7 +36,7 @@ class AuthController extends Controller
 
         // Log error if user is not found
         if (!$user) {
-            return response()->json(new DefaultResponse(
+            return response()->json(new GlobalResponse(
                 'error',
                 'User not found after authentication.',
                 []
@@ -42,7 +44,7 @@ class AuthController extends Controller
         }
 
         // Build the response using DefaultResponse
-        return response()->json(new DefaultResponse(
+        return response()->json(new GlobalResponse(
             'success',
             ResponseMessages::SUCCESS_LOGIN,
             [
@@ -62,20 +64,22 @@ class AuthController extends Controller
     {
         $removeToken = JWTAuth::invalidate(JWTAuth::getToken());
 
+        // Check if the token was successfully invalidated
         if ($removeToken) {
-            return response()->json(new DefaultResponse(
+            // Return success response
+            return response()->json(new LogoutResponse(
                 'success',
-                ResponseMessages::SUCCESS_LOGOUT,
-                []
+                ResponseMessages::SUCCESS_LOGOUT
             ), HttpStatusCodes::OK);
         }
 
-        return response()->json(new DefaultResponse(
+        // Return error response
+        return response()->json(new LogoutResponse(
             'error',
-            ResponseMessages::ERROR_LOGOUT_FAILED,
-            []
+            ResponseMessages::ERROR_LOGOUT_FAILED
         ), HttpStatusCodes::INTERNAL_SERVER_ERROR);
     }
+
 
     public function register(RegisterRequest $request): \Illuminate\Http\JsonResponse
     {
@@ -100,7 +104,7 @@ class AuthController extends Controller
         $user = \DB::table('users')->where('id', $uuid)->first();
 
         // Use DefaultResponse for response
-        return response()->json(new DefaultResponse(
+        return response()->json(new GlobalResponse(
             'success',
             ResponseMessages::SUCCESS_USER_CREATED,
             [

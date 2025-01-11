@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\DTOs\Response;
 
-class NilaiResponse
+class GlobalResponse
 {
     public $status;
     public $message;
